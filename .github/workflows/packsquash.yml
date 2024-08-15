@@ -21,8 +21,31 @@ jobs:
             # Set a custom output file path to work with the generated ZIP file
             # without needing to download its artifact in a separate step
             output_file_path = '/tmp/pack.zip'
+      - name: Run PackSquash for tweeks
+        uses: ComunidadAylas/PackSquash-action@v4
+        with:
+          packsquash_version: latest
+          options: |
+            # Optimize the pack in the root repository directory.
+            # This is the default value for pack_directory when no PackSquash options are defined
+            pack_directory = 'pack'
+
+            # Set a custom output file path to work with the generated ZIP file
+            # without needing to download its artifact in a separate step
+            output_file_path = '/tmp/tweeks.zip'
       - name: Tag and create release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: action-v${{ github.run_number }}
-          files: /tmp/pack.zip
+          files: /tmp/pack.zip 
+      - name: Upload Release asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset
+        env:
+          GITHUB_TOKEN: $({ secrets.GITHUB_TOKEN})
+        with:
+          upload_url: $({ steps.create_release.outputs.upload_url })
+          asset_path: /tmp/tweeks.zip
+          asset_name: tweeks.zip
+          asset_content_type: application/zip
+        
