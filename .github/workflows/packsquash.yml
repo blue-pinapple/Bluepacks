@@ -83,5 +83,5 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /tmp/pack.zip
           asset_name: pack.zip
-          ssset_content_type: application/zip
+          asset_content_type: application/zip
         
